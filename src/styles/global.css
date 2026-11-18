@@ -217,3 +217,29 @@ a:hover {
     border-color var(--transition),
     background var(--transition);
 }
+
+
+/* ========== Scroll reveal ========== */
+.js main > section:not(.hero),
+.js main > article {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 600ms ease,
+    transform 600ms ease;
+}
+
+.js main > section.is-visible,
+.js main > article.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js main > section:not(.hero),
+  .js main > article {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
