@@ -1,0 +1,54 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectDetail from '../../components/ProjectDetail.astro';
+import CategoryView from '../../components/CategoryView.astro';
+import { CATEGORIES } from '../../data/categories';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects', ({ data }) => !data.draft);
+  const categorySlugs = CATEGORIES.map((category) => category.slug);
+
+  const categoryPaths = CATEGORIES.map((category) => ({
+    params: { slug: category.slug },
+    props: {
+      type: 'category' as const,
+      category,
+      projects: projects.filter(
+        (project) =>
+          project.data.category === category.slug ||
+          project.data.secondaryCategory === category.slug,
+      ),
+    },
+  }));
+
+  const projectPaths = projects.map((project) => {
+    if (categorySlugs.includes(project.id)) {
+      throw new Error(
+        `The project file "${project.id}" has the same name as a category page. Please rename it.`,
+      );
+    }
+    return {
+      params: { slug: project.id },
+      props: { type: 'project' as const, project },
+    };
+  });
+
+  return [...categoryPaths, ...projectPaths];
+}
+
+const props = Astro.props;
+const Content = props.type === 'project' ? (await render(props.project)).Content : null;
+---
+
+{
+  props.type === 'category' ? (
+    <BaseLayout title={props.category.title} description={props.category.description}>
+      <CategoryView category={props.category} projects={props.projects} />
+    </BaseLayout>
+  ) : (
+    <BaseLayout title={props.project.data.title} description={props.project.data.description}>
+      <ProjectDetail project={props.project}>{Content && <Content />}</ProjectDetail>
+    </BaseLayout>
+  )
+}

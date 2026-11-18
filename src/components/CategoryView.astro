@@ -1,0 +1,183 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { CATEGORIES, type Category } from '../data/categories';
+import Breadcrumbs from './Breadcrumbs.astro';
+import ProjectCard from './ProjectCard.astro';
+
+interface Props {
+  category: Category;
+  projects: CollectionEntry<'projects'>[];
+}
+
+const { category, projects } = Astro.props;
+
+const sorted = [...projects].sort(
+  (a, b) => (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0),
+);
+const tools = [...new Set(sorted.flatMap((project) => project.data.tools))];
+const others = CATEGORIES.filter((item) => item.slug !== category.slug);
+---
+
+<section class="section container">
+  <Breadcrumbs
+    items={[{ label: 'Home', href: '/' }, { label: 'Projects', href: '/projects' }, { label: category.title }]}
+  />
+
+  <header class="head">
+    <span class="icon" aria-hidden="true">
+      <svg
+        width="26"
+        height="26"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        set:html={category.icon}
+      />
+    </span>
+    <p class="eyebrow">Category</p>
+    <h1>{category.title}</h1>
+    <p class="lead">{category.description}</p>
+  </header>
+
+  <div class="info">
+    <section aria-labelledby="skills-heading">
+      <h2 id="skills-heading">Relevant Skills</h2>
+      <ul class="chips">
+        {category.skills.map((skill) => <li>{skill}</li>)}
+      </ul>
+    </section>
+
+    {
+      tools.length > 0 && (
+        <section aria-labelledby="tools-heading">
+          <h2 id="tools-heading">Tools Used in These Projects</h2>
+          <ul class="chips">
+            {tools.map((tool) => (
+              <li>{tool}</li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+  </div>
+
+  <h2 class="count">Projects ({sorted.length})</h2>
+
+  {
+    sorted.length > 0 ? (
+      <div class="grid">
+        {sorted.map((project) => (
+          <ProjectCard project={project} />
+        ))}
+      </div>
+    ) : (
+      <p class="empty">Projects in this category will be added soon.</p>
+    )
+  }
+
+  <nav class="other" aria-label="Other categories">
+    <h2>Explore Other Categories</h2>
+    <ul>
+      {
+        others.map((item) => (
+          <li>
+            <a class="btn btn-secondary" href={`/projects/${item.slug}`}>
+              {item.title}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</section>
+
+<style>
+  .head {
+    max-width: 760px;
+  }
+
+  .icon {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    margin-bottom: var(--space-sm);
+    border-radius: 14px;
+    background: rgba(164, 138, 224, 0.12);
+    color: var(--accent-cyan);
+  }
+
+  h1 {
+    font-size: var(--text-3xl);
+  }
+
+  .lead {
+    color: var(--text-muted);
+    font-size: var(--text-lg);
+  }
+
+  .info {
+    display: grid;
+    gap: var(--space-lg);
+    margin-top: var(--space-lg);
+  }
+
+  @media (min-width: 860px) {
+    .info {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .info h2,
+  .other h2 {
+    font-size: var(--text-xl);
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .chips li {
+    padding: 0.3rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: rgba(164, 138, 224, 0.08);
+    font-size: var(--text-sm);
+  }
+
+  .count {
+    margin: var(--space-xl) 0 var(--space-md);
+    font-size: var(--text-2xl);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--space-md);
+  }
+
+  .empty {
+    color: var(--text-muted);
+  }
+
+  .other {
+    margin-top: var(--space-xl);
+  }
+
+  .other ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+</style>
