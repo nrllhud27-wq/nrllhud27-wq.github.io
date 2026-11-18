@@ -1,0 +1,130 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../data/site';
+
+const channels = [
+  {
+    title: 'Email',
+    text: 'Best for opportunities and detailed questions.',
+    label: SITE.email,
+    href: `mailto:${SITE.email}`,
+    external: false,
+  },
+  {
+    title: 'LinkedIn',
+    text: 'Let’s connect professionally.',
+    label: 'View LinkedIn profile',
+    href: SITE.linkedin,
+    external: true,
+  },
+  {
+    title: 'GitHub',
+    text: 'Browse my code and project repositories.',
+    label: 'View GitHub profile',
+    href: SITE.github,
+    external: true,
+  },
+];
+---
+
+<BaseLayout title="Contact" description="Get in touch with Nuda by email, LinkedIn, or GitHub.">
+  <section class="section container">
+    <p class="eyebrow">Contact</p>
+    <h1>Let’s Connect</h1>
+    <p class="lead">
+      Interested in my work or have a question? Feel free to reach out through any of the channels
+      below.
+    </p>
+
+    <div class="grid">
+      {
+        channels.map((channel) => (
+          <a
+            class="card channel"
+            href={channel.href}
+            target={channel.external ? '_blank' : undefined}
+            rel={channel.external ? 'noopener noreferrer' : undefined}
+          >
+            <h2>{channel.title}</h2>
+            <p>{channel.text}</p>
+            <span class="link">
+              {channel.label} <span aria-hidden="true">{channel.external ? '↗' : '→'}</span>
+            </span>
+          </a>
+        ))
+      }
+    </div>
+
+    <p class="note">
+      Email links open your default mail app. If nothing happens, copy the address:
+      <span class="email">{SITE.email}</span>
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  h1 {
+    font-size: var(--text-3xl);
+  }
+
+  .lead {
+    max-width: 60ch;
+    margin-bottom: var(--space-lg);
+    color: var(--text-muted);
+    font-size: var(--text-lg);
+  }
+
+  .grid {
+    display: grid;
+    gap: var(--space-md);
+  }
+
+  @media (min-width: 860px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .channel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    color: var(--text);
+  }
+
+  .channel:hover {
+    color: var(--text);
+    transform: translateY(-4px);
+    border-color: var(--accent);
+    background: var(--surface-hover);
+  }
+
+  h2 {
+    margin: 0;
+    font-size: var(--text-xl);
+  }
+
+  .channel p {
+    flex: 1;
+    margin: 0 0 var(--space-sm);
+    color: var(--text-muted);
+  }
+
+  .link {
+    font-weight: 600;
+    color: var(--accent);
+    overflow-wrap: anywhere;
+  }
+
+  .note {
+    margin-top: var(--space-lg);
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .email {
+    font-family: var(--font-mono);
+    color: var(--text);
+    user-select: all;
+  }
+</style>
