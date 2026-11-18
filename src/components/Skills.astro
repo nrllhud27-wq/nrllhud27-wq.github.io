@@ -1,0 +1,70 @@
+---
+import { SKILL_GROUPS } from '../data/skills';
+---
+
+<section class="section container" aria-labelledby="skills-heading">
+  <p class="eyebrow">Technical Skills</p>
+  <h2 id="skills-heading">Tools &amp; Techniques</h2>
+
+  <div class="grid">
+    {
+      SKILL_GROUPS.map((group) => (
+        <div class="card">
+          <h3>{group.title}</h3>
+          <ul class="chips">
+            {group.items.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  h2 {
+    font-size: var(--text-3xl);
+    margin-bottom: var(--space-lg);
+  }
+
+  .grid {
+    display: grid;
+    gap: var(--space-md);
+  }
+
+  @media (min-width: 640px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  h3 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-sm);
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .chips li {
+    padding: 0.3rem 0.8rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: rgba(94, 176, 255, 0.08);
+    font-size: var(--text-sm);
+    color: var(--text);
+  }
+</style>

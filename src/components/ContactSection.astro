@@ -1,0 +1,66 @@
+---
+import { SITE } from '../data/site';
+---
+
+<section class="section container" id="contact" aria-labelledby="contact-heading">
+  <div class="contact-box">
+    <p class="eyebrow">Contact</p>
+    <h2 id="contact-heading">Let’s Connect</h2>
+    <p class="text">
+      Interested in my work or have a question? Feel free to reach out by email or through my
+      professional profiles.
+    </p>
+    <div class="actions">
+      <a class="btn btn-primary" href={`mailto:${SITE.email}`}>Send an Email</a>
+      <a class="btn btn-secondary" href={SITE.linkedin} target="_blank" rel="noopener noreferrer">
+        LinkedIn
+      </a>
+      <a class="btn btn-secondary" href={SITE.github} target="_blank" rel="noopener noreferrer">
+        GitHub
+      </a>
+    </div>
+    <p class="email-line">
+      Prefer to copy the address? <span class="email">{SITE.email}</span>
+    </p>
+  </div>
+</section>
+
+<style>
+  .contact-box {
+    padding: var(--space-lg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background:
+      radial-gradient(600px 240px at 100% 0%, rgba(139, 123, 255, 0.14), transparent 70%),
+      var(--surface);
+  }
+
+  h2 {
+    font-size: var(--text-3xl);
+  }
+
+  .text {
+    max-width: 55ch;
+    color: var(--text-muted);
+    font-size: var(--text-lg);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-top: var(--space-md);
+  }
+
+  .email-line {
+    margin: var(--space-md) 0 0;
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .email {
+    font-family: var(--font-mono);
+    color: var(--text);
+    user-select: all;
+  }
+</style>

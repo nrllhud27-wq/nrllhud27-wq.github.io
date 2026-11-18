@@ -1,38 +1,16 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import CategoryCards from '../components/CategoryCards.astro';
+import Skills from '../components/Skills.astro';
+import AboutPreview from '../components/AboutPreview.astro';
+import ContactSection from '../components/ContactSection.astro';
 ---
 
 <BaseLayout>
-  <section class="section container">
-    <p class="eyebrow">Design system check</p>
-    <h1>Turning Data Into <span class="gradient-text">Meaningful Insights.</span></h1>
-    <p class="lead">
-      This is a temporary page to verify the layout, colors, and buttons. The real homepage
-      comes in the next stage.
-    </p>
-    <div class="actions">
-      <a class="btn btn-primary" href="/projects">View My Projects</a>
-      <a class="btn btn-secondary" href="/about">About Me</a>
-    </div>
-  </section>
+  <Hero />
+  <CategoryCards />
+  <Skills />
+  <AboutPreview />
+  <ContactSection />
 </BaseLayout>
-
-<style>
-  h1 {
-    font-size: var(--text-hero);
-    max-width: 14ch;
-  }
-
-  .lead {
-    max-width: 55ch;
-    color: var(--text-muted);
-    font-size: var(--text-lg);
-  }
-
-  .actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-sm);
-    margin-top: var(--space-md);
-  }
-</style>

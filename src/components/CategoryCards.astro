@@ -1,0 +1,103 @@
+---
+import { CATEGORIES } from '../data/categories';
+---
+
+<section class="section container" aria-labelledby="categories-heading">
+  <p class="eyebrow">Focus Areas</p>
+  <h2 id="categories-heading">Explore by Category</h2>
+
+  <div class="grid">
+    {
+      CATEGORIES.map((category) => (
+        <a class="card category-card" href={`/projects/${category.slug}`}>
+          <span class="icon" aria-hidden="true">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              set:html={category.icon}
+            />
+          </span>
+          <h3>{category.title}</h3>
+          <p>{category.description}</p>
+          <span class="more">
+            View projects <span class="arrow" aria-hidden="true">→</span>
+          </span>
+        </a>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  h2 {
+    font-size: var(--text-3xl);
+    margin-bottom: var(--space-lg);
+  }
+
+  .grid {
+    display: grid;
+    gap: var(--space-md);
+  }
+
+  @media (min-width: 860px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .category-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    color: var(--text);
+  }
+
+  .category-card:hover {
+    color: var(--text);
+    transform: translateY(-4px);
+    border-color: var(--accent);
+    background: var(--surface-hover);
+  }
+
+  .icon {
+    display: grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    margin-bottom: var(--space-xs);
+    border-radius: 12px;
+    background: rgba(94, 176, 255, 0.12);
+    color: var(--accent-cyan);
+  }
+
+  h3 {
+    font-size: var(--text-xl);
+    margin: 0;
+  }
+
+  p {
+    flex: 1;
+    margin: 0 0 var(--space-sm);
+    color: var(--text-muted);
+  }
+
+  .more {
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .arrow {
+    display: inline-block;
+    transition: transform var(--transition);
+  }
+
+  .category-card:hover .arrow {
+    transform: translateX(4px);
+  }
+</style>

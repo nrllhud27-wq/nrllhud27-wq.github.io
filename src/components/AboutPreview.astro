@@ -1,0 +1,88 @@
+<section class="section container" aria-labelledby="about-heading">
+  <div class="about">
+    <div class="about-text">
+      <p class="eyebrow">About Me</p>
+      <h2 id="about-heading">Applying Mathematics to Real Data Problems</h2>
+      <p>
+        I’m a Mathematics graduate from Universitas Negeri Semarang (UNNES), Indonesia. I’m
+        interested in applying mathematical and statistical knowledge to practical data
+        problems.
+      </p>
+      <p>
+        I have worked with real-world data through internships at BPS Kabupaten Semarang and
+        PT Mamagreen Pacific, and I’m continuing to build my skills in data analysis,
+        business intelligence, data science, and machine learning.
+      </p>
+      <a class="btn btn-secondary" href="/about">Read More About Me</a>
+    </div>
+
+    <dl class="card facts">
+      <div>
+        <dt>Education</dt>
+        <dd>Bachelor of Mathematics, UNNES (2022–2026)</dd>
+      </div>
+      <div>
+        <dt>Experience</dt>
+        <dd>Costing &amp; Pricing Analyst Intern, PT Mamagreen Pacific</dd>
+        <dd>Internship, BPS Kabupaten Semarang</dd>
+      </div>
+      <div>
+        <dt>Certifications</dt>
+        <dd>Microsoft Power BI Data Analyst</dd>
+        <dd>DQLAB Data Analyst Track</dd>
+      </div>
+      <div>
+        <dt>Interests</dt>
+        <dd>Data Analytics, Statistics, Data Science, Machine Learning</dd>
+      </div>
+    </dl>
+  </div>
+</section>
+
+<style>
+  .about {
+    display: grid;
+    gap: var(--space-lg);
+    align-items: start;
+  }
+
+  @media (min-width: 860px) {
+    .about {
+      grid-template-columns: 1.1fr 0.9fr;
+    }
+  }
+
+  h2 {
+    font-size: var(--text-3xl);
+  }
+
+  .about-text p {
+    max-width: 60ch;
+    color: var(--text-muted);
+    font-size: var(--text-lg);
+  }
+
+  .about-text .btn {
+    margin-top: var(--space-xs);
+  }
+
+  .facts {
+    margin: 0;
+    display: grid;
+    gap: var(--space-md);
+  }
+
+  dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent-cyan);
+    margin-bottom: 0.25rem;
+  }
+
+  dd {
+    margin: 0 0 0.25rem;
+    color: var(--text);
+  }
+</style>
