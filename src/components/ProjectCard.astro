@@ -190,4 +190,17 @@ const href = `/projects/${project.id}`;
   .project-card:hover .arrow {
     transform: translateX(4px);
   }
+
+  /* Frame the screenshot so bright dashboards sit nicely on the dark card */
+  .thumb {
+    padding: 0.75rem;
+    background: linear-gradient(160deg, #2a2150, #17122f);
+  }
+
+  .thumb :global(img) {
+    border-radius: 8px;
+    object-fit: contain;
+    object-position: center;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
+  }
 </style>
