@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://nrllhud27-wq.github.io/sitemap-index.xml
