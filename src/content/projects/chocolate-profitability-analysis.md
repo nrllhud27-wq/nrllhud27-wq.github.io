@@ -6,6 +6,8 @@ tools: ['MySQL', 'SQL', 'Power BI', 'DAX']
 status: completed
 featured: true
 date: 2026-07-01
+thumbnail: '../../assets/projects/chocolate-executive-dashboard.png'
+thumbnailAlt: 'Power BI executive dashboard showing total revenue, total profit, overall margin, average order value, total cost, a profitability map by country, and the top and bottom 10 stores by profit.'
 githubUrl: 'https://github.com/nrllhud27-wq/chocolate-profitability-analysis'
 metrics:
   - label: 'Validated transactions'

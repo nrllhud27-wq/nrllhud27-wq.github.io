@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { Image } from 'astro:assets';
 import { CATEGORIES } from '../data/categories';
 
 interface Props {
@@ -7,7 +8,8 @@ interface Props {
 }
 
 const { project } = Astro.props;
-const { title, description, category, secondaryCategory, tools, status } = project.data;
+const { title, description, category, secondaryCategory, tools, status, thumbnail, thumbnailAlt } =
+  project.data;
 
 const labelFor = (slug: string) => CATEGORIES.find((c) => c.slug === slug)?.title ?? slug;
 const categorySlugs = [category, secondaryCategory].filter(Boolean) as string[];
@@ -19,8 +21,21 @@ const href = `/projects/${project.id}`;
   data-categories={categorySlugs.join(' ')}
   data-tools={tools.join('|')}
 >
-  <div class="thumb" role="img" aria-label={`Preview placeholder for ${title}`}>
-    <span>Preview placeholder</span>
+  <div class="thumb">
+    {
+      thumbnail ? (
+        <Image
+          src={thumbnail}
+          alt={thumbnailAlt ?? `Preview of ${title}`}
+          width={720}
+          loading="lazy"
+        />
+      ) : (
+        <span role="img" aria-label={`Preview placeholder for ${title}`}>
+          Preview placeholder
+        </span>
+      )
+    }
   </div>
 
   <div class="body">
@@ -64,6 +79,7 @@ const href = `/projects/${project.id}`;
     display: grid;
     place-items: center;
     aspect-ratio: 16 / 9;
+    overflow: hidden;
     border-bottom: 1px solid var(--border);
     background:
       repeating-linear-gradient(
@@ -72,6 +88,14 @@ const href = `/projects/${project.id}`;
         transparent 12px 24px
       ),
       var(--bg);
+  }
+
+  .thumb :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
   }
 
   .thumb span {
