@@ -197,4 +197,90 @@ const focusAreas = [
       transform: none;
     }
   }
+
+  /* Chart animation: the line draws itself once, then the last point pulses */
+  .hero-visual polyline {
+    stroke-dasharray: 450;
+    stroke-dashoffset: 450;
+    animation: draw-line 1.8s ease-out 0.4s forwards;
+  }
+
+  .hero-visual path {
+    opacity: 0;
+    animation: fade-in 1s ease-out 1.2s forwards;
+  }
+
+  .nodes circle {
+    opacity: 0;
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: pop-in 0.4s ease-out forwards;
+  }
+
+  .nodes circle:nth-child(1) {
+    animation-delay: 0.4s;
+  }
+  .nodes circle:nth-child(2) {
+    animation-delay: 0.75s;
+  }
+  .nodes circle:nth-child(3) {
+    animation-delay: 1s;
+  }
+  .nodes circle:nth-child(4) {
+    animation-delay: 1.4s;
+  }
+  .nodes circle:nth-child(5) {
+    animation-delay: 1.7s;
+  }
+  .nodes circle:nth-child(6) {
+    animation:
+      pop-in 0.4s ease-out 2.2s forwards,
+      pulse 2.4s ease-in-out 2.8s infinite;
+  }
+
+  @keyframes draw-line {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes fade-in {
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes pop-in {
+    from {
+      opacity: 0;
+      transform: scale(0.4);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.5);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-visual polyline {
+      stroke-dashoffset: 0;
+      animation: none;
+    }
+
+    .hero-visual path,
+    .nodes circle {
+      opacity: 1;
+      animation: none;
+    }
+  }
 </style>
