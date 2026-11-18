@@ -1,0 +1,169 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { CATEGORIES } from '../data/categories';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { title, description, category, secondaryCategory, tools, status } = project.data;
+
+const labelFor = (slug: string) => CATEGORIES.find((c) => c.slug === slug)?.title ?? slug;
+const categorySlugs = [category, secondaryCategory].filter(Boolean) as string[];
+const href = `/projects/${project.id}`;
+---
+
+<article
+  class="card project-card"
+  data-categories={categorySlugs.join(' ')}
+  data-tools={tools.join('|')}
+>
+  <div class="thumb" role="img" aria-label={`Preview placeholder for ${title}`}>
+    <span>Preview placeholder</span>
+  </div>
+
+  <div class="body">
+    <div class="meta">
+      {categorySlugs.map((slug) => <span class="badge">{labelFor(slug)}</span>)}
+      {status === 'in-progress' && <span class="badge badge-progress">In Progress</span>}
+    </div>
+
+    <h3><a href={href}>{title}</a></h3>
+    <p class="desc">{description}</p>
+
+    <ul class="tools">
+      {tools.map((tool) => <li>{tool}</li>)}
+    </ul>
+
+    <span class="more">View project details <span class="arrow" aria-hidden="true">→</span></span>
+  </div>
+</article>
+
+<style>
+  .project-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .project-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent);
+    background: var(--surface-hover);
+  }
+
+  .project-card:has(a:focus-visible) {
+    outline: 2px solid var(--accent-cyan);
+    outline-offset: 3px;
+  }
+
+  .thumb {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 16 / 9;
+    border-bottom: 1px solid var(--border);
+    background:
+      repeating-linear-gradient(
+        135deg,
+        rgba(94, 176, 255, 0.06) 0 12px,
+        transparent 12px 24px
+      ),
+      var(--bg);
+  }
+
+  .thumb span {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--text-muted);
+  }
+
+  .body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: var(--space-xs);
+    padding: var(--space-md);
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .badge {
+    padding: 0.15rem 0.65rem;
+    border-radius: 999px;
+    background: rgba(94, 176, 255, 0.12);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+  }
+
+  .badge-progress {
+    background: rgba(139, 123, 255, 0.16);
+    color: var(--accent-violet);
+  }
+
+  h3 {
+    margin: 0;
+    font-size: var(--text-xl);
+  }
+
+  h3 a {
+    color: var(--text);
+  }
+
+  h3 a:hover {
+    color: var(--text);
+  }
+
+  /* Makes the whole card clickable through the title link */
+  h3 a::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .desc {
+    flex: 1;
+    margin: 0;
+    color: var(--text-muted);
+  }
+
+  .tools {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    list-style: none;
+    margin: var(--space-xs) 0 0;
+    padding: 0;
+  }
+
+  .tools li {
+    padding: 0.15rem 0.6rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 0.8rem;
+    color: var(--text);
+  }
+
+  .more {
+    margin-top: var(--space-xs);
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .arrow {
+    display: inline-block;
+    transition: transform var(--transition);
+  }
+
+  .project-card:hover .arrow {
+    transform: translateX(4px);
+  }
+</style>
