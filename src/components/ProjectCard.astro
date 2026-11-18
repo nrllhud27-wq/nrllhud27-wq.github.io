@@ -17,26 +17,22 @@ const href = `/projects/${project.id}`;
 ---
 
 <article
-  class="card project-card"
+  class:list={['card', 'project-card', { 'no-thumb': !thumbnail }]}
   data-categories={categorySlugs.join(' ')}
   data-tools={tools.join('|')}
 >
-  <div class="thumb">
-    {
-      thumbnail ? (
+  {
+    thumbnail && (
+      <div class="thumb">
         <Image
           src={thumbnail}
           alt={thumbnailAlt ?? `Preview of ${title}`}
           width={720}
           loading="lazy"
         />
-      ) : (
-        <span role="img" aria-label={`Preview placeholder for ${title}`}>
-          Preview placeholder
-        </span>
-      )
-    }
-  </div>
+      </div>
+    )
+  }
 
   <div class="body">
     <div class="meta">
@@ -56,8 +52,9 @@ const href = `/projects/${project.id}`;
 </article>
 
 <style>
-  .project-card {
+    .project-card {
     position: relative;
+    align-self: start;
     display: flex;
     flex-direction: column;
     padding: 0;
@@ -75,33 +72,32 @@ const href = `/projects/${project.id}`;
     outline-offset: 3px;
   }
 
+  /* Cards without an image get a slim accent line instead of an empty box */
+  .no-thumb::before {
+    content: '';
+    display: block;
+    height: 3px;
+    background: var(--gradient);
+  }
+
   .thumb {
     display: grid;
     place-items: center;
     aspect-ratio: 16 / 9;
+    padding: 0.75rem;
     overflow: hidden;
     border-bottom: 1px solid var(--border);
-    background:
-      repeating-linear-gradient(
-        135deg,
-        rgba(94, 176, 255, 0.06) 0 12px,
-        transparent 12px 24px
-      ),
-      var(--bg);
+    background: linear-gradient(160deg, #2a2150, #17122f);
   }
 
   .thumb :global(img) {
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: top;
-  }
-
-  .thumb span {
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    color: var(--text-muted);
+    border-radius: 8px;
+    object-fit: contain;
+    object-position: center;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
   }
 
   .body {
@@ -121,7 +117,7 @@ const href = `/projects/${project.id}`;
   .badge {
     padding: 0.15rem 0.65rem;
     border-radius: 999px;
-    background: rgba(94, 176, 255, 0.12);
+    background: rgba(164, 138, 224, 0.12);
     color: var(--accent);
     font-family: var(--font-mono);
     font-size: 0.75rem;
@@ -129,7 +125,7 @@ const href = `/projects/${project.id}`;
   }
 
   .badge-progress {
-    background: rgba(139, 123, 255, 0.16);
+    background: rgba(144, 113, 206, 0.16);
     color: var(--accent-violet);
   }
 
@@ -189,18 +185,5 @@ const href = `/projects/${project.id}`;
 
   .project-card:hover .arrow {
     transform: translateX(4px);
-  }
-
-  /* Frame the screenshot so bright dashboards sit nicely on the dark card */
-  .thumb {
-    padding: 0.75rem;
-    background: linear-gradient(160deg, #2a2150, #17122f);
-  }
-
-  .thumb :global(img) {
-    border-radius: 8px;
-    object-fit: contain;
-    object-position: center;
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
   }
 </style>
