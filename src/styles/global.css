@@ -1,44 +1,56 @@
 /* ========== Design tokens ========== */
 :root {
-  --bg: #0b0918;
-  --surface: #14112a;
-  --surface-hover: #1d1940;
-  --border: #2c2754;
-  --text: #ece9fa;
-  --text-muted: #a8a2c8;
+  color-scheme: light;
 
-  /* Note: --accent-cyan keeps its old name but is now a light lavender */
-  --accent: #a48ae0;
-  --accent-cyan: #5eead4;
-  --accent-violet: #c084fc;
-  --gradient: linear-gradient(
-    135deg,
-    var(--accent-cyan),
-    var(--accent) 50%,
-    var(--accent-violet)
-  );
+  /* Palette */
+  --cream: #f5efe1;
+  --sand: #e5d3af;
+  --burgundy: #790d16;
+  --blue: #aec4d4;
 
+  /* Text and lines (dark neutrals added for readable text) */
+  --ink: #231f1c;
+  --muted: #5b5249;
+  --rule: rgba(35, 31, 28, 0.2);
+
+  /* Typography (system fonts only) */
+  --font-serif: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
   --font-sans: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
   --text-sm: 0.875rem;
-  --text-lg: 1.125rem;
-  --text-xl: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
-  --text-2xl: clamp(1.5rem, 1.2rem + 1.2vw, 2rem);
-  --text-3xl: clamp(2rem, 1.4rem + 2.4vw, 3rem);
-  --text-hero: clamp(2.5rem, 1.5rem + 4.5vw, 4.5rem);
+  --text-base: 1.0625rem;
+  --text-lg: 1.25rem;
+  --text-xl: clamp(1.375rem, 1.2rem + 0.8vw, 1.75rem);
+  --text-2xl: clamp(1.75rem, 1.3rem + 1.8vw, 2.75rem);
+  --text-3xl: clamp(2.25rem, 1.5rem + 3vw, 4rem);
+  --text-hero: clamp(3rem, 1.6rem + 6vw, 6.25rem);
 
+  /* Spacing and layout */
   --space-xs: 0.5rem;
   --space-sm: 1rem;
   --space-md: 1.5rem;
   --space-lg: 2.5rem;
   --space-xl: 4rem;
-  --space-2xl: 6rem;
+  --space-2xl: 7rem;
+  --container: 72rem;
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+  --rail: 11rem;
+  --transition: 160ms ease;
 
-  --radius: 14px;
-  --container: 1120px;
-  --header-h: 68px;
-  --transition: 180ms ease;
+  /* Legacy aliases for components not redesigned yet (remove in stage 4) */
+  --bg: var(--cream);
+  --surface: #faf5e9;
+  --surface-hover: var(--sand);
+  --border: var(--rule);
+  --text: var(--ink);
+  --text-muted: var(--muted);
+  --accent: var(--burgundy);
+  --accent-cyan: var(--burgundy);
+  --accent-violet: var(--burgundy);
+  --gradient: var(--burgundy);
+  --font-mono: var(--font-sans);
+  --radius: 0;
+  --header-h: 4.5rem;
 }
 
 /* ========== Reset and base ========== */
@@ -50,7 +62,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: calc(var(--header-h) + 1rem);
+  scroll-padding-top: var(--header-h);
   -webkit-text-size-adjust: 100%;
 }
 
@@ -72,13 +84,10 @@ body {
   display: flex;
   flex-direction: column;
   font-family: var(--font-sans);
+  font-size: var(--text-base);
   line-height: 1.65;
-  color: var(--text);
-  background-color: var(--bg);
-  background-image:
-    radial-gradient(900px 500px at 85% -10%, rgba(144, 113, 206, 0.18), transparent 60%),
-    radial-gradient(800px 500px at 0% 0%, rgba(94, 234, 212, 0.07), transparent 55%);
-  background-repeat: no-repeat;
+  color: var(--ink);
+  background: var(--cream);
 }
 
 main {
@@ -95,57 +104,102 @@ h1,
 h2,
 h3,
 h4 {
-  line-height: 1.2;
   margin: 0 0 var(--space-sm);
-  letter-spacing: -0.02em;
+  font-family: var(--font-serif);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
 }
 
 p {
   margin: 0 0 var(--space-sm);
+  text-wrap: pretty;
 }
 
 a {
-  color: var(--accent);
+  color: var(--burgundy);
   text-decoration: none;
   transition: color var(--transition);
 }
 
 a:hover {
-  color: var(--accent-cyan);
+  color: var(--ink);
+}
+
+::selection {
+  background: var(--blue);
+  color: var(--ink);
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent-cyan);
+  outline: 2px solid var(--burgundy);
   outline-offset: 3px;
-  border-radius: 4px;
 }
 
-/* ========== Layout helpers ========== */
+/* ========== Editorial layout helpers ========== */
 .container {
   width: 100%;
   max-width: var(--container);
   margin-inline: auto;
-  padding-inline: var(--space-md);
+  padding-inline: var(--gutter);
 }
 
-.section {
-  padding-block: var(--space-xl);
+/* A section separated from the previous one by a thin ink rule */
+.band {
+  border-top: 1px solid var(--ink);
+  padding-block: clamp(2.5rem, 6vw, 5rem);
 }
 
-.eyebrow {
-  font-family: var(--font-mono);
-  font-size: var(--text-sm);
-  letter-spacing: 0.08em;
+/* Heading on the left, content on the right (stacked on small screens) */
+.rail {
+  display: grid;
+  gap: var(--space-sm) var(--space-lg);
+}
+
+@media (min-width: 56rem) {
+  .rail {
+    grid-template-columns: var(--rail) minmax(0, 1fr);
+  }
+}
+
+/* Comfortable reading width */
+.measure {
+  max-width: 38rem;
+}
+
+/* Small uppercase label */
+.label {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--accent-cyan);
-  margin-bottom: var(--space-xs);
+  color: var(--muted);
 }
 
-.gradient-text {
-  background: var(--gradient);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+/* Numbers that line up in lists */
+.num {
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+/* Text link with a thin underline and a small arrow */
+.text-link {
+  display: inline-block;
+  padding-bottom: 0.1em;
+  border-bottom: 1px solid currentColor;
+  font-weight: 500;
+}
+
+.text-link::after {
+  content: '\2192';
+  display: inline-block;
+  margin-left: 0.4em;
+  transition: transform var(--transition);
+}
+
+.text-link:hover::after {
+  transform: translateX(3px);
 }
 
 .skip-link {
@@ -154,92 +208,68 @@ a:hover {
   top: 0;
   z-index: 100;
   padding: 0.75rem 1rem;
-  background: var(--accent);
-  color: #0b0918;
-  font-weight: 600;
+  background: var(--burgundy);
+  color: var(--cream);
 }
 
 .skip-link:focus {
   left: 0;
 }
 
-/* ========== Buttons ========== */
+/* ========== Legacy styles (remove in stage 4) ========== */
+.section {
+  padding-block: var(--space-xl);
+}
+
+.eyebrow {
+  margin: 0 0 var(--space-xs);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--burgundy);
+}
+
+.gradient-text {
+  color: var(--burgundy);
+}
+
 .btn {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.4rem;
-  border-radius: 999px;
-  border: 1px solid transparent;
+  padding: 0.7rem 1.25rem;
+  border: 1px solid var(--burgundy);
   font-weight: 600;
   cursor: pointer;
   transition:
-    transform var(--transition),
-    box-shadow var(--transition),
     background var(--transition),
-    border-color var(--transition);
-}
-
-.btn:hover {
-  transform: translateY(-2px);
+    color var(--transition);
 }
 
 .btn-primary {
-  background: var(--gradient);
-  color: #0b0918;
+  background: var(--burgundy);
+  color: var(--cream);
 }
 
 .btn-primary:hover {
-  color: #0b0918;
-  box-shadow: 0 8px 24px rgba(144, 113, 206, 0.35);
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--cream);
 }
 
 .btn-secondary {
   background: transparent;
-  color: var(--text);
-  border-color: var(--border);
+  color: var(--burgundy);
 }
 
 .btn-secondary:hover {
-  color: var(--text);
-  border-color: var(--accent);
-  background: rgba(164, 138, 224, 0.1);
+  background: var(--burgundy);
+  color: var(--cream);
 }
 
-/* ========== Card ========== */
 .card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
   padding: var(--space-md);
-  transition:
-    transform var(--transition),
-    border-color var(--transition),
-    background var(--transition);
-}
-
-
-/* ========== Scroll reveal ========== */
-.js main > section:not(.hero),
-.js main > article {
-  opacity: 0;
-  transform: translateY(16px);
-  transition:
-    opacity 600ms ease,
-    transform 600ms ease;
-}
-
-.js main > section.is-visible,
-.js main > article.is-visible {
-  opacity: 1;
-  transform: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .js main > section:not(.hero),
-  .js main > article {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
+  border: 1px solid var(--rule);
+  background: var(--surface);
 }

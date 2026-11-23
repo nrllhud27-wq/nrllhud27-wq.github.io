@@ -1,40 +1,25 @@
 ---
-import { NAV } from '../data/site';
-
 const { pathname } = Astro.url;
-const isActive = (href: string) =>
-  href === '/' ? pathname === '/' : pathname.startsWith(href);
+
+const links = [
+  { label: 'Projects', href: '/projects', match: '/projects' },
+  { label: 'About', href: '/about', match: '/about' },
+  { label: 'Contact', href: '/#contact', match: null },
+];
+
+const isCurrent = (match: string | null) => match !== null && pathname.startsWith(match);
 ---
 
 <header class="site-header">
-  <div class="container header-inner">
-    <a href="/" class="brand" aria-label="Nuda, home">
-      <span class="brand-mark" aria-hidden="true">N</span>
-      <span class="brand-name">Nuda</span>
-    </a>
-
-    <button
-      class="nav-toggle"
-      aria-expanded="false"
-      aria-controls="primary-nav"
-      aria-label="Toggle navigation menu"
-    >
-      <span class="bar"></span>
-      <span class="bar"></span>
-      <span class="bar"></span>
-    </button>
-
-    <nav id="primary-nav" class="nav" aria-label="Primary">
+  <div class="container bar">
+    <a class="wordmark" href="/">Nuda</a>
+    <nav aria-label="Primary">
       <ul>
         {
-          NAV.map((item) => (
+          links.map((link) => (
             <li>
-              <a
-                href={item.href}
-                class:list={['nav-link', { active: isActive(item.href) }]}
-                aria-current={isActive(item.href) ? 'page' : undefined}
-              >
-                {item.label}
+              <a href={link.href} aria-current={isCurrent(link.match) ? 'page' : undefined}>
+                {link.label}
               </a>
             </li>
           ))
@@ -46,139 +31,49 @@ const isActive = (href: string) =>
 
 <style>
   .site-header {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    height: var(--header-h);
-    background: rgba(10, 14, 26, 0.88);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--ink);
   }
 
-  .header-inner {
-    height: 100%;
+  .bar {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-between;
+    padding-block: 1.25rem;
   }
 
-  .brand {
+  .wordmark {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+
+  .wordmark:hover {
+    color: var(--burgundy);
+  }
+
+  ul {
     display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    color: var(--text);
-    font-weight: 700;
-    font-size: var(--text-lg);
-  }
-
-  .brand:hover {
-    color: var(--text);
-  }
-
-  .brand-mark {
-    display: grid;
-    place-items: center;
-    width: 34px;
-    height: 34px;
-    border-radius: 9px;
-    background: var(--gradient);
-    color: #06101f;
-    font-weight: 800;
-  }
-
-  .nav ul {
-    display: flex;
-    gap: 0.25rem;
+    gap: clamp(0.875rem, 3vw, 2rem);
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
-  .nav-link {
-    display: block;
-    padding: 0.5rem 0.9rem;
-    border-radius: 8px;
-    color: var(--text-muted);
-    font-weight: 500;
+  nav a {
+    padding-block: 0.25rem;
+    border-bottom: 1px solid transparent;
+    font-size: 0.95rem;
+    color: var(--ink);
+    transition:
+      border-color var(--transition),
+      color var(--transition);
   }
 
-  .nav-link:hover {
-    color: var(--text);
-  }
-
-  .nav-link.active {
-    color: var(--text);
-    background: rgba(94, 176, 255, 0.12);
-  }
-
-  .nav-toggle {
-    display: none;
-    flex-direction: column;
-    gap: 5px;
-    padding: 0.6rem;
-    background: none;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    cursor: pointer;
-  }
-
-  .bar {
-    width: 20px;
-    height: 2px;
-    background: var(--text);
-    transition: transform var(--transition), opacity var(--transition);
-  }
-
-  .nav-toggle[aria-expanded='true'] .bar:nth-child(1) {
-    transform: translateY(7px) rotate(45deg);
-  }
-  .nav-toggle[aria-expanded='true'] .bar:nth-child(2) {
-    opacity: 0;
-  }
-  .nav-toggle[aria-expanded='true'] .bar:nth-child(3) {
-    transform: translateY(-7px) rotate(-45deg);
-  }
-
-  @media (max-width: 767px) {
-    .nav-toggle {
-      display: flex;
-    }
-
-    .nav {
-      display: none;
-      position: absolute;
-      top: var(--header-h);
-      left: 0;
-      right: 0;
-      padding: var(--space-sm) var(--space-md) var(--space-md);
-      background: var(--bg);
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav[data-open] {
-      display: block;
-    }
-
-    .nav ul {
-      flex-direction: column;
-    }
+  nav a:hover,
+  nav a[aria-current='page'] {
+    border-bottom-color: var(--burgundy);
+    color: var(--burgundy);
   }
 </style>
-
-<script>
-  const toggle = document.querySelector('.nav-toggle');
-  const nav = document.querySelector('#primary-nav');
-
-  function setOpen(open: boolean) {
-    toggle?.setAttribute('aria-expanded', String(open));
-    nav?.toggleAttribute('data-open', open);
-  }
-
-  toggle?.addEventListener('click', () => {
-    setOpen(toggle.getAttribute('aria-expanded') !== 'true');
-  });
-
-  nav?.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', () => setOpen(false));
-  });
-</script>
