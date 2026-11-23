@@ -9,7 +9,7 @@ export interface Category {
 export const CATEGORIES: Category[] = [
   {
     slug: 'data-analytics',
-    title: 'Data Analytics',
+      title: 'Data Analyst',
     description:
       'Transforming raw data into actionable insights through SQL, Excel, Python, and Power BI.',
     icon: '<rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="6" width="4" height="15" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/>',
