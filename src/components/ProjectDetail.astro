@@ -25,223 +25,192 @@ const {
 } = project.data;
 
 const labelFor = (slug: string) => CATEGORIES.find((c) => c.slug === slug)?.title ?? slug;
-const categorySlugs = [category, secondaryCategory].filter(Boolean) as string[];
+const categories = [category, secondaryCategory].filter(Boolean) as string[];
+const meta = [...categories.map(labelFor), ...(status === 'in-progress' ? ['In progress'] : [])];
 
 const resources = [
-  githubUrl && { label: 'GitHub Repository', href: githubUrl },
-  notebookUrl && { label: 'Jupyter Notebook', href: notebookUrl },
-  dashboardUrl && { label: 'Power BI Dashboard', href: dashboardUrl },
+  githubUrl && { label: 'GitHub repository', href: githubUrl },
+  notebookUrl && { label: 'Jupyter notebook', href: notebookUrl },
+  dashboardUrl && { label: 'Power BI dashboard', href: dashboardUrl },
 ].filter(Boolean) as { label: string; href: string }[];
 ---
 
-<article class="section container">
-  <Breadcrumbs
-    items={[{ label: 'Home', href: '/' }, { label: 'Projects', href: '/projects' }, { label: title }]}
-  />
-
-  <header class="head">
-    <div class="meta">
-      {
-        categorySlugs.map((slug) => (
-          <a class="badge" href={`/projects/${slug}`}>
-            {labelFor(slug)}
-          </a>
-        ))
-      }
-      {status === 'in-progress' && <span class="badge badge-progress">In Progress</span>}
-    </div>
-
+<article>
+  <header class="container head">
+    <Breadcrumbs
+      items={[{ label: 'Home', href: '/' }, { label: 'Projects', href: '/projects' }, { label: title }]}
+    />
+    <p class="label meta">{meta.join(' · ')}</p>
     <h1>{title}</h1>
-    <p class="lead">{description}</p>
-
+    <p class="lead measure">{description}</p>
     {
       resources.length > 0 && (
-        <div class="actions">
-          {resources.map((resource, index) => (
-            <a
-              class={`btn ${index === 0 ? 'btn-primary' : 'btn-secondary'}`}
-              href={resource.href}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              {resource.label} <span aria-hidden="true">↗</span>
+        <p class="links">
+          {resources.map((resource) => (
+            <a class="text-link" href={resource.href} target="_blank" rel="noopener noreferrer">
+              {resource.label}
             </a>
           ))}
-        </div>
+        </p>
       )
     }
   </header>
 
   {
     thumbnail && (
-      <figure class="shot">
-        <Image src={thumbnail} alt={thumbnailAlt ?? `Preview of ${title}`} width={1000} />
-      </figure>
+      <div class="container">
+        <figure class="shot">
+          <Image src={thumbnail} alt={thumbnailAlt ?? `Preview of ${title}`} width={1200} />
+        </figure>
+      </div>
     )
   }
 
   {
     metrics.length > 0 && (
-      <section class="block" aria-labelledby="metrics-heading">
-        <h2 id="metrics-heading">Key Metrics</h2>
-        <dl class="metrics">
-          {metrics.map((metric) => (
-            <div class="metric card">
-              <dt>{metric.label}</dt>
-              <dd>{metric.value}</dd>
-            </div>
-          ))}
-        </dl>
+      <section class="band" aria-labelledby="metrics-heading">
+        <div class="container rail">
+          <h2 id="metrics-heading" class="rail-title">
+            Key metrics
+          </h2>
+          <dl class="facts">
+            {metrics.map((metric) => (
+              <div>
+                <dt>{metric.label}</dt>
+                <dd class="num">{metric.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
       </section>
     )
   }
 
-  <section class="block" aria-labelledby="tools-heading">
-    <h2 id="tools-heading">Tools &amp; Technologies</h2>
-    <ul class="tools">
-      {tools.map((tool) => <li>{tool}</li>)}
-    </ul>
+  <section class="band" aria-labelledby="tools-heading">
+    <div class="container rail">
+      <h2 id="tools-heading" class="rail-title">Tools &amp; technologies</h2>
+      <p class="tools">{tools.join(' · ')}</p>
+    </div>
   </section>
 
-  <div class="prose">
-    <slot />
-  </div>
-
-  <a class="back" href="/projects">← Back to all projects</a>
+  <section class="band">
+    <div class="container">
+      <div class="prose">
+        <slot />
+      </div>
+      <p class="back"><a href="/projects">Back to projects</a></p>
+    </div>
+  </section>
 </article>
 
 <style>
   .head {
-    max-width: 820px;
+    padding-block: var(--space-lg) clamp(1.5rem, 4vw, 2.5rem);
   }
 
   .meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
     margin-bottom: var(--space-sm);
-  }
-
-  .badge {
-    padding: 0.15rem 0.65rem;
-    border-radius: 999px;
-    background: rgba(164, 138, 224, 0.12);
-    color: var(--accent);
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0.04em;
-  }
-
-  .badge:hover {
-    color: var(--accent-cyan);
-  }
-
-  .badge-progress {
-    background: rgba(144, 113, 206, 0.16);
-    color: var(--accent-violet);
+    color: var(--burgundy);
   }
 
   h1 {
-    font-size: var(--text-3xl);
+    max-width: 22ch;
+    margin: 0 0 var(--space-md);
+    font-size: clamp(2rem, 1.3rem + 2.8vw, 3.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.025em;
   }
 
   .lead {
-    color: var(--text-muted);
+    margin-bottom: var(--space-md);
     font-size: var(--text-lg);
+    color: var(--muted);
   }
 
-  .actions {
+  .links {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-sm);
-    margin-top: var(--space-md);
+    gap: var(--space-xs) var(--space-md);
+    margin: 0;
   }
 
   .shot {
-    max-width: 980px;
-    margin: var(--space-lg) 0;
-    padding: 0.75rem;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: linear-gradient(160deg, #2a2150, #17122f);
+    max-width: 60rem;
+    margin: 0 0 var(--space-xl);
+    padding: 0.5rem;
+    border: 1px solid var(--rule);
+    background: rgba(229, 211, 175, 0.35);
   }
 
   .shot :global(img) {
     width: 100%;
     height: auto;
-    border-radius: 8px;
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.45);
   }
 
-  .block {
-    margin-top: var(--space-lg);
-  }
-
-  .block h2 {
+  .rail-title {
+    margin: 0;
     font-size: var(--text-xl);
   }
 
-  .metrics {
+  .facts {
+    max-width: 38rem;
+    margin: 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .facts div {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    grid-template-columns: 1fr auto;
     gap: var(--space-sm);
+    align-items: baseline;
+    padding: 0.75rem 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .facts dt {
+    color: var(--muted);
+  }
+
+  .facts dd {
     margin: 0;
-  }
-
-  .metric {
-    display: flex;
-    flex-direction: column-reverse;
-    gap: 0.25rem;
-  }
-
-  .metric dt {
-    color: var(--text-muted);
-    font-size: var(--text-sm);
-  }
-
-  .metric dd {
-    margin: 0;
-    font-size: var(--text-2xl);
-    font-weight: 700;
-    color: var(--text);
+    font-family: var(--font-serif);
+    font-size: var(--text-xl);
+    text-align: right;
   }
 
   .tools {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    list-style: none;
+    max-width: 38rem;
     margin: 0;
-    padding: 0;
-  }
-
-  .tools li {
-    padding: 0.3rem 0.8rem;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    background: rgba(164, 138, 224, 0.08);
-    font-size: var(--text-sm);
+    font-size: var(--text-lg);
   }
 
   .prose {
-    max-width: 760px;
-    margin-top: var(--space-lg);
+    max-width: 40rem;
+  }
+
+  @media (min-width: 56rem) {
+    .prose,
+    .back {
+      margin-left: calc(var(--rail) + var(--space-lg));
+    }
   }
 
   .prose :global(h2) {
     margin: var(--space-xl) 0 var(--space-sm);
+    padding-top: var(--space-sm);
+    border-top: 1px solid var(--rule);
     font-size: var(--text-2xl);
+  }
+
+  .prose :global(h2:first-child) {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: 0;
   }
 
   .prose :global(h3) {
     margin: var(--space-lg) 0 var(--space-xs);
     font-size: var(--text-xl);
-  }
-
-  .prose :global(p),
-  .prose :global(li) {
-    color: var(--text-muted);
-    font-size: var(--text-lg);
   }
 
   .prose :global(ul),
@@ -254,31 +223,40 @@ const resources = [
     margin-bottom: 0.4rem;
   }
 
-  .prose :global(strong) {
-    color: var(--text);
-  }
-
   .prose :global(a) {
     text-decoration: underline;
-    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
   }
 
   .prose :global(code) {
-    padding: 0.1rem 0.35rem;
-    border-radius: 6px;
-    background: var(--surface);
-    font-family: var(--font-mono);
+    padding: 0.1rem 0.3rem;
+    background: rgba(229, 211, 175, 0.5);
     font-size: 0.9em;
   }
 
   .prose :global(img) {
-    margin-block: var(--space-md);
-    border-radius: 10px;
+    height: auto;
+    margin-block: var(--space-md) var(--space-xs);
+    padding: 0.5rem;
+    border: 1px solid var(--rule);
+    background: rgba(229, 211, 175, 0.35);
+  }
+
+  .prose :global(p > em:only-child) {
+    display: block;
+    margin-bottom: var(--space-md);
+    font-size: 0.875rem;
+    font-style: normal;
+    color: var(--muted);
   }
 
   .back {
-    display: inline-block;
-    margin-top: var(--space-xl);
-    font-weight: 600;
+    margin: var(--space-xl) 0 0;
+  }
+
+  .back a::before {
+    content: '\2190';
+    margin-right: 0.4em;
   }
 </style>
