@@ -2,57 +2,114 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ProjectCard from '../../components/ProjectCard.astro';
+import { CATEGORIES } from '../../data/categories';
 
-const projects = (await getCollection('projects', ({ data }) => !data.draft)).sort(
-  (a, b) => (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0),
-);
+const projects = await getCollection('projects', ({ data }) => !data.draft);
+type Entry = (typeof projects)[number];
+const byDate = (a: Entry, b: Entry) =>
+  (b.data.date?.valueOf() ?? 0) - (a.data.date?.valueOf() ?? 0);
+
+const tones: Record<string, { bg: string; fg: string }> = {
+  'data-analytics': { bg: 'var(--burgundy)', fg: 'var(--cream)' },
+  'data-science': { bg: 'var(--blue)', fg: 'var(--ink)' },
+  'machine-learning': { bg: 'var(--sand)', fg: 'var(--ink)' },
+};
+
+const groups = CATEGORIES.map((category) => ({
+  category,
+  anchor: category.title.toLowerCase().replace(/\s+/g, '-'),
+  tone: tones[category.slug] ?? { bg: 'var(--sand)', fg: 'var(--ink)' },
+  items: projects.filter((project) => project.data.category === category.slug).sort(byDate),
+}))
+  .filter((group) => group.items.length > 0)
+  .map((group, index) => ({ ...group, number: String(index + 1).padStart(2, '0') }));
 ---
 
 <BaseLayout
   title="Projects"
-  description="Data analytics, data science, and machine learning projects by Nuda."
+  description="Data analysis, data science, and machine learning projects by Nuda."
 >
-  <section class="section container">
-    <p class="eyebrow">Projects</p>
-    <h1>Selected Data Projects</h1>
-    <p class="intro">
-      A collection of my work in data analytics, data science, and machine learning, from
-      business-oriented analysis to predictive modeling.
-    </p>
+  <section class="page-hero">
+    <div class="container">
+      <h1>Projects</h1>
+    </div>
+  </section>
 
-    {
-      projects.length > 0 ? (
-        <div class="grid">
-          {projects.map((project) => (
+  {
+    groups.map((group) => (
+      <section
+        class="group"
+        id={group.anchor}
+        style={`--tone: ${group.tone.bg}; --tone-fg: ${group.tone.fg}`}
+        aria-labelledby={`${group.anchor}-heading`}
+      >
+        <div class="band">
+          <div class="container band-row">
+            <span class="number num" aria-hidden="true">
+              {group.number}
+            </span>
+            <h2 id={`${group.anchor}-heading`}>{group.category.title}</h2>
+            <p class="count">
+              {group.items.length} {group.items.length === 1 ? 'project' : 'projects'}
+            </p>
+          </div>
+        </div>
+
+        <div class="container cards">
+          {group.items.map((project) => (
             <ProjectCard project={project} />
           ))}
         </div>
-      ) : (
-        <p class="empty">Projects will appear here soon.</p>
-      )
-    }
-  </section>
+      </section>
+    ))
+  }
 </BaseLayout>
 
 <style>
-  h1 {
-    font-size: var(--text-3xl);
+  .page-hero {
+    padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(2rem, 5vw, 3.5rem);
   }
 
-  .intro {
-    max-width: 60ch;
-    margin-bottom: var(--space-lg);
-    color: var(--text-muted);
-    font-size: var(--text-lg);
+  .group {
+    margin-top: var(--space-xl);
+    scroll-margin-top: 1rem;
   }
 
-  .grid {
+  .band {
+    background: var(--tone);
+    color: var(--tone-fg);
+  }
+
+  .band-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-xs) var(--space-md);
+    padding-block: 1.25rem;
+  }
+
+  .number {
+    font-family: var(--font-serif);
+    font-size: var(--text-2xl);
+    line-height: 1;
+    opacity: 0.8;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: var(--text-2xl);
+  }
+
+  .count {
+    margin: 0 0 0 auto;
+    font-size: 0.875rem;
+  }
+
+  .cards {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+    align-items: start;
     gap: var(--space-md);
-  }
-
-  .empty {
-    color: var(--text-muted);
+    padding-top: var(--space-lg);
   }
 </style>
