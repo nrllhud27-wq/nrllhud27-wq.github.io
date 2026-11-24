@@ -1,137 +1,132 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Skills from '../components/Skills.astro';
-import ContactSection from '../components/ContactSection.astro';
+import { SKILL_GROUPS } from '../data/skills';
 import { EDUCATION, EXPERIENCE, CERTIFICATIONS } from '../data/about';
 ---
 
 <BaseLayout
   title="About"
-  description="About Nuda: a Mathematics graduate from UNNES focused on data analytics, data science, and machine learning."
+  description="About Nuda: a Mathematics graduate from UNNES with experience in data analysis, data science, and machine learning."
 >
-  <section class="section container intro">
-    <p class="eyebrow">About</p>
-    <h1>About Me</h1>
-    <p class="lead">
-      I’m Nurul Huda (Nuda), a Mathematics graduate from Universitas Negeri Semarang (UNNES),
-      Indonesia. My mathematical background has shaped my analytical, problem-solving approach to
-      data.
-    </p>
-    <p class="text">
-      I’m interested in data analytics, data science, and machine learning, especially in
-      applying statistical methods to uncover patterns and build predictive models. Through
-      academic work, internships, and hands-on projects, I’ve gained practical experience across
-      these areas.
-    </p>
+  <section class="page-hero">
+    <div class="container">
+      <h1>About me</h1>
+      <p class="intro measure">
+        I’m a Mathematics graduate from Universitas Negeri Semarang, Indonesia. My background
+        includes coursework, projects, and internships involving mathematics, statistics, and data
+        analysis.
+      </p>
+    </div>
   </section>
 
-  <section class="block container" aria-labelledby="education-heading">
-    <h2 id="education-heading">Education</h2>
-    <div class="card">
-      <div class="row">
-        <div>
-          <h3>{EDUCATION.degree}</h3>
-          <p class="org">{EDUCATION.school}, {EDUCATION.location}</p>
+  <section class="block" aria-labelledby="education-heading">
+    <div class="container rail">
+      <h2 id="education-heading" class="rail-title">Education</h2>
+      <div>
+        <div class="row">
+          <div>
+            <h3>{EDUCATION.degree}</h3>
+            <p class="org">{EDUCATION.school}, {EDUCATION.location}</p>
+          </div>
+          <p class="period">{EDUCATION.period}</p>
         </div>
-        <p class="period">{EDUCATION.period}</p>
+        <p class="label sub">Relevant coursework</p>
+        <p class="plain">{EDUCATION.coursework.join(' · ')}</p>
+        <p class="label sub">Final project</p>
+        <p class="plain">{EDUCATION.finalProject}</p>
       </div>
-      <p class="label">Relevant coursework</p>
-      <ul class="chips">
-        {EDUCATION.coursework.map((course) => <li>{course}</li>)}
-      </ul>
-      <p class="label">Final project</p>
-      <p class="text small">{EDUCATION.finalProject}</p>
     </div>
   </section>
 
-  <section class="block container" aria-labelledby="experience-heading">
-    <h2 id="experience-heading">Experience</h2>
-    <div class="stack">
-      {
-        EXPERIENCE.map((item) => (
-          <article class="card">
-            <div class="row">
-              <div>
-                <h3>{item.role}</h3>
-                <p class="org">{item.organization}</p>
+  <section class="block" aria-labelledby="experience-heading">
+    <div class="container rail">
+      <h2 id="experience-heading" class="rail-title">Experience</h2>
+      <div>
+        {
+          EXPERIENCE.map((item) => (
+            <article class="entry">
+              <div class="row">
+                <div>
+                  <h3>{item.role}</h3>
+                  <p class="org">{item.organization}</p>
+                </div>
+                <p class="period">{item.period}</p>
               </div>
-              <p class="period">{item.period}</p>
-            </div>
-            <ul class="points">
-              {item.points.map((point) => (
-                <li>{point}</li>
-              ))}
-            </ul>
-          </article>
-        ))
-      }
+              <ul class="points">
+                {item.points.map((point) => (
+                  <li>{point}</li>
+                ))}
+              </ul>
+            </article>
+          ))
+        }
+      </div>
     </div>
   </section>
 
-  <Skills />
-
-  <section class="block container" aria-labelledby="certs-heading">
-    <h2 id="certs-heading">Certifications</h2>
-    <ul class="chips">
-      {CERTIFICATIONS.map((certification) => <li>{certification}</li>)}
-    </ul>
+  <section class="block sand" aria-labelledby="skills-heading">
+    <div class="container rail">
+      <h2 id="skills-heading" class="rail-title">Skills</h2>
+      <ul class="skills">
+        {
+          SKILL_GROUPS.map((group) => (
+            <li class="skill-row">
+              <span class="label">{group.title}</span>
+              <span>{group.items.join(' · ')}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
   </section>
 
-  <section class="block container" aria-labelledby="direction-heading">
-    <h2 id="direction-heading">Interests &amp; Career Direction</h2>
-    <p class="text">
-      My goal is to grow as a data professional, working across data exploration, statistical
-      analysis, business intelligence, and predictive modeling to turn complex data into clear,
-      evidence-based insights.
-    </p>
+  <section class="block" aria-labelledby="certs-heading">
+    <div class="container rail">
+      <h2 id="certs-heading" class="rail-title">Certifications</h2>
+      <ul class="certs">
+        {CERTIFICATIONS.map((certification) => <li>{certification}</li>)}
+      </ul>
+    </div>
   </section>
-
-  <ContactSection />
 </BaseLayout>
 
 <style>
-  .intro h1 {
-    font-size: var(--text-3xl);
+  .page-hero {
+    padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(2rem, 5vw, 3.5rem);
   }
 
-  .lead {
-    max-width: 65ch;
-    color: var(--text);
-    font-size: var(--text-xl);
-  }
-
-  .text {
-    max-width: 65ch;
-    color: var(--text-muted);
+  .intro {
+    margin: var(--space-md) 0 0;
     font-size: var(--text-lg);
-  }
-
-  .text.small {
-    margin: 0;
-    font-size: 1rem;
+    line-height: 1.55;
+    color: var(--sand);
   }
 
   .block {
-    padding-block: var(--space-lg);
+    padding-block: clamp(2.25rem, 5vw, 4rem);
+    border-top: 1px solid var(--rule);
   }
 
-  .block h2 {
-    margin-bottom: var(--space-md);
-    font-size: var(--text-2xl);
+  .page-hero + .block {
+    border-top: 0;
   }
 
-  .stack {
-    display: grid;
-    gap: var(--space-md);
+  .block.sand {
+    border-top: 0;
+    background: var(--sand);
+  }
+
+  .rail-title {
+    margin: 0;
+    font-size: var(--text-xl);
   }
 
   .row {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-xs) var(--space-md);
     align-items: baseline;
     justify-content: space-between;
-    margin-bottom: var(--space-sm);
+    gap: 0.25rem var(--space-md);
   }
 
   h3 {
@@ -140,50 +135,70 @@ import { EDUCATION, EXPERIENCE, CERTIFICATIONS } from '../data/about';
   }
 
   .org {
-    margin: 0;
-    color: var(--text-muted);
+    margin: 0.25rem 0 0;
+    color: var(--muted);
   }
 
   .period {
     margin: 0;
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    color: var(--accent-cyan);
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--burgundy);
   }
 
-  .label {
-    margin: var(--space-md) 0 var(--space-xs);
-    font-family: var(--font-mono);
-    font-size: var(--text-sm);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text-muted);
+  .sub {
+    margin-top: var(--space-md);
   }
 
-  .chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  .plain {
+    max-width: 40rem;
+    margin: 0.35rem 0 0;
   }
 
-  .chips li {
-    padding: 0.3rem 0.8rem;
-    border: 1px solid var(--border);
-    border-radius: 999px;
-    background: rgba(164, 138, 224, 0.08);
-    font-size: var(--text-sm);
+  .entry + .entry {
+    margin-top: var(--space-lg);
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--rule);
   }
 
   .points {
-    margin: 0;
+    max-width: 42rem;
+    margin: var(--space-sm) 0 0;
     padding-left: 1.25rem;
   }
 
   .points li {
     margin-bottom: 0.5rem;
-    color: var(--text-muted);
+  }
+
+  .skills,
+  .certs {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .skills {
+    border-bottom-color: rgba(35, 31, 28, 0.3);
+  }
+
+  .skill-row {
+    display: grid;
+    gap: 0.25rem var(--space-md);
+    padding: 0.85rem 0;
+    border-top: 1px solid rgba(35, 31, 28, 0.3);
+  }
+
+  @media (min-width: 40rem) {
+    .skill-row {
+      grid-template-columns: 11rem 1fr;
+    }
+  }
+
+  .certs li {
+    padding: 0.85rem 0;
+    border-top: 1px solid var(--rule);
   }
 </style>
