@@ -273,3 +273,32 @@ a:hover {
   border: 1px solid var(--rule);
   background: var(--surface);
 }
+
+/* ========== Burgundy surfaces ========== */
+.page-hero {
+  padding-block: clamp(3rem, 9vw, 7rem) clamp(2.5rem, 6vw, 5rem);
+  background: var(--burgundy);
+  color: var(--cream);
+}
+
+.page-hero h1 {
+  margin: 0;
+  color: var(--cream);
+  font-size: var(--text-hero);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.page-hero a {
+  color: var(--blue);
+}
+
+.page-hero a:hover {
+  color: var(--cream);
+}
+
+.page-hero :focus-visible,
+.site-header :focus-visible,
+.site-footer :focus-visible {
+  outline-color: var(--blue);
+}

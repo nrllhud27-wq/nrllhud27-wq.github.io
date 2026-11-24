@@ -3,64 +3,65 @@ import { SITE } from '../data/site';
 ---
 
 <section class="section container" id="contact" aria-labelledby="contact-heading">
-  <div class="contact-box">
-    <p class="eyebrow">Contact</p>
-    <h2 id="contact-heading">Let’s Connect</h2>
-    <p class="text">
-      Interested in my work or have a question? Feel free to reach out by email or through my
-      professional profiles.
-    </p>
+  <div class="box">
+    <h2 id="contact-heading">Contact</h2>
+    <p class="text measure">You can reach me by email or find me on LinkedIn and GitHub.</p>
     <div class="actions">
-      <a class="btn btn-primary" href={`mailto:${SITE.email}`}>Send an Email</a>
-      <a class="btn btn-secondary" href={SITE.linkedin} target="_blank" rel="noopener noreferrer">
-        LinkedIn
-      </a>
-      <a class="btn btn-secondary" href={SITE.github} target="_blank" rel="noopener noreferrer">
-        GitHub
-      </a>
+      <a class="button solid" href={`mailto:${SITE.email}`}>Email</a>
+      <a class="button" href={SITE.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      <a class="button" href={SITE.github} target="_blank" rel="noopener noreferrer">GitHub</a>
     </div>
-    <p class="email-line">
-      Prefer to copy the address? <span class="email">{SITE.email}</span>
-    </p>
   </div>
 </section>
 
 <style>
-  .contact-box {
-    padding: var(--space-lg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background:
-      radial-gradient(600px 240px at 100% 0%, rgba(139, 123, 255, 0.14), transparent 70%),
-      var(--surface);
+  .box {
+    padding: clamp(1.5rem, 4vw, 3rem);
+    border: 1px solid var(--rule);
+    background: #faf5e9;
   }
 
   h2 {
+    margin: 0 0 var(--space-sm);
     font-size: var(--text-3xl);
   }
 
   .text {
-    max-width: 55ch;
-    color: var(--text-muted);
+    margin-bottom: var(--space-md);
     font-size: var(--text-lg);
+    color: var(--muted);
   }
 
   .actions {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-sm);
-    margin-top: var(--space-md);
   }
 
-  .email-line {
-    margin: var(--space-md) 0 0;
-    color: var(--text-muted);
-    font-size: var(--text-sm);
+  .button {
+    display: inline-block;
+    padding: 0.75rem 1.4rem;
+    border: 1px solid var(--burgundy);
+    font-weight: 600;
+    color: var(--burgundy);
+    transition:
+      background var(--transition),
+      color var(--transition),
+      border-color var(--transition);
   }
 
-  .email {
-    font-family: var(--font-mono);
-    color: var(--text);
-    user-select: all;
+  .button:hover {
+    background: var(--burgundy);
+    color: var(--cream);
+  }
+
+  .solid {
+    background: var(--burgundy);
+    color: var(--cream);
+  }
+
+  .solid:hover {
+    border-color: var(--ink);
+    background: var(--ink);
   }
 </style>

@@ -31,7 +31,8 @@ const isCurrent = (match: string | null) => match !== null && pathname.startsWit
 
 <style>
   .site-header {
-    border-bottom: 1px solid var(--ink);
+    background: var(--burgundy);
+    border-bottom: 1px solid rgba(245, 239, 225, 0.25);
   }
 
   .bar {
@@ -46,11 +47,11 @@ const isCurrent = (match: string | null) => match !== null && pathname.startsWit
     font-size: 1.5rem;
     font-weight: 600;
     letter-spacing: -0.01em;
-    color: var(--ink);
+    color: var(--cream);
   }
 
   .wordmark:hover {
-    color: var(--burgundy);
+    color: var(--blue);
   }
 
   ul {
@@ -65,7 +66,7 @@ const isCurrent = (match: string | null) => match !== null && pathname.startsWit
     padding-block: 0.25rem;
     border-bottom: 1px solid transparent;
     font-size: 0.95rem;
-    color: var(--ink);
+    color: var(--cream);
     transition:
       border-color var(--transition),
       color var(--transition);
@@ -73,7 +74,7 @@ const isCurrent = (match: string | null) => match !== null && pathname.startsWit
 
   nav a:hover,
   nav a[aria-current='page'] {
-    border-bottom-color: var(--burgundy);
-    color: var(--burgundy);
+    border-bottom-color: var(--blue);
+    color: var(--blue);
   }
 </style>
