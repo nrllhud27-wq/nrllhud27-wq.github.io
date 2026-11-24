@@ -35,22 +35,8 @@
   --container: 72rem;
   --gutter: clamp(1.25rem, 4vw, 2.5rem);
   --rail: 11rem;
-  --transition: 160ms ease;
-
-  /* Legacy aliases for components not redesigned yet (remove in stage 4) */
-  --bg: var(--cream);
-  --surface: #faf5e9;
-  --surface-hover: var(--sand);
-  --border: var(--rule);
-  --text: var(--ink);
-  --text-muted: var(--muted);
-  --accent: var(--burgundy);
-  --accent-cyan: var(--burgundy);
-  --accent-violet: var(--burgundy);
-  --gradient: var(--burgundy);
-  --font-mono: var(--font-sans);
-  --radius: 0;
   --header-h: 4.5rem;
+  --transition: 160ms ease;
 }
 
 /* ========== Reset and base ========== */
@@ -137,7 +123,7 @@ a:hover {
   outline-offset: 3px;
 }
 
-/* ========== Editorial layout helpers ========== */
+/* ========== Layout helpers ========== */
 .container {
   width: 100%;
   max-width: var(--container);
@@ -145,10 +131,8 @@ a:hover {
   padding-inline: var(--gutter);
 }
 
-/* A section separated from the previous one by a thin ink rule */
-.band {
-  border-top: 1px solid var(--ink);
-  padding-block: clamp(2.5rem, 6vw, 5rem);
+.section {
+  padding-block: var(--space-xl);
 }
 
 /* Heading on the left, content on the right (stacked on small screens) */
@@ -214,64 +198,6 @@ a:hover {
 
 .skip-link:focus {
   left: 0;
-}
-
-/* ========== Legacy styles (remove in stage 4) ========== */
-.section {
-  padding-block: var(--space-xl);
-}
-
-.eyebrow {
-  margin: 0 0 var(--space-xs);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--burgundy);
-}
-
-.gradient-text {
-  color: var(--burgundy);
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.7rem 1.25rem;
-  border: 1px solid var(--burgundy);
-  font-weight: 600;
-  cursor: pointer;
-  transition:
-    background var(--transition),
-    color var(--transition);
-}
-
-.btn-primary {
-  background: var(--burgundy);
-  color: var(--cream);
-}
-
-.btn-primary:hover {
-  background: var(--ink);
-  border-color: var(--ink);
-  color: var(--cream);
-}
-
-.btn-secondary {
-  background: transparent;
-  color: var(--burgundy);
-}
-
-.btn-secondary:hover {
-  background: var(--burgundy);
-  color: var(--cream);
-}
-
-.card {
-  padding: var(--space-md);
-  border: 1px solid var(--rule);
-  background: var(--surface);
 }
 
 /* ========== Burgundy surfaces ========== */
