@@ -12,7 +12,6 @@ const isCurrent = (match: string | null) => match !== null && pathname.startsWit
 
 <header class="site-header">
   <div class="container bar">
-    <a class="mark" href="/" aria-label="Nuda, home">N</a>
     <nav aria-label="Primary">
       <ul>
         {
@@ -38,27 +37,8 @@ const isCurrent = (match: string | null) => match !== null && pathname.startsWit
   .bar {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    padding-block: 1rem;
-  }
-
-  .mark {
-    display: grid;
-    place-items: center;
-    width: 2.25rem;
-    height: 2.25rem;
-    background: var(--cream);
-    font-family: var(--font-serif);
-    font-size: 1.375rem;
-    font-weight: 600;
-    line-height: 1;
-    color: var(--burgundy);
-    transition: background var(--transition);
-  }
-
-  .mark:hover {
-    background: var(--blue);
-    color: var(--burgundy);
+    justify-content: flex-end;
+    padding-block: 1.25rem;
   }
 
   ul {
