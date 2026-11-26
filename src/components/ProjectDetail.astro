@@ -269,4 +269,32 @@ const resources = [
     content: '\2190';
     margin-right: 0.4em;
   }
+
+  .prose :global(table) {
+    width: 100%;
+    margin: 0 0 var(--space-md);
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+
+  .prose :global(th),
+  .prose :global(td) {
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--rule);
+    text-align: right;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+
+  .prose :global(th:first-child),
+  .prose :global(td:first-child) {
+    padding-left: 0;
+    text-align: left;
+  }
+
+  .prose :global(th) {
+    border-bottom: 2px solid var(--burgundy);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
 </style>
