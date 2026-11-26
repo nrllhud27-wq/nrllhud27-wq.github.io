@@ -1,7 +1,7 @@
 ---
 title: 'Retail Customer Churn Analysis'
 description: 'Customer segmentation with RFM analysis and a Logistic Regression model that estimates churn probability for a retail business, presented in a Power BI dashboard.'
-category: data-science
+category: data-analytics
 secondaryCategory: machine-learning
 tools: ['Python', 'Pandas', 'NumPy', 'Scikit-learn', 'Power BI']
 status: completed

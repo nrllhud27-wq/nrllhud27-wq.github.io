@@ -6,15 +6,20 @@ import { CATEGORIES } from '../data/categories';
 
 const projects = await getCollection('projects', ({ data }) => !data.draft);
 
-const tones = ['burgundy', 'blue', 'sand'];
+const tones: Record<string, string> = {
+  'data-analytics': 'burgundy',
+  'data-science': 'blue',
+  'machine-learning': 'sand',
+};
 
-const cards = CATEGORIES.map((category, index) => ({
+const cards = CATEGORIES.map((category) => ({
   category,
-  number: String(index + 1).padStart(2, '0'),
-  tone: tones[index] ?? 'sand',
+  tone: tones[category.slug] ?? 'sand',
   anchor: category.title.toLowerCase().replace(/\s+/g, '-'),
   count: projects.filter((project) => project.data.category === category.slug).length,
-}));
+}))
+  .filter((card) => card.count > 0)
+  .map((card, index) => ({ ...card, number: String(index + 1).padStart(2, '0') }));
 ---
 
 <BaseLayout>
@@ -118,13 +123,8 @@ const cards = CATEGORIES.map((category, index) => ({
 
   .cards {
     display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
     gap: var(--space-md);
-  }
-
-  @media (min-width: 52rem) {
-    .cards {
-      grid-template-columns: repeat(3, 1fr);
-    }
   }
 
   .card-link {

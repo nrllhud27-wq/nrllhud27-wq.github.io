@@ -2,7 +2,6 @@
 title: 'HR Employee Attrition & Productivity Analysis'
 description: 'Statistical analysis of 100,000 employee records to identify which factors influence attrition, job satisfaction, and performance.'
 category: data-analytics
-secondaryCategory: data-science
 tools: ['Python', 'Pandas', 'NumPy', 'Matplotlib', 'Seaborn', 'Plotly', 'SciPy', 'Statsmodels']
 status: completed
 featured: true
